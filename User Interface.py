@@ -581,7 +581,7 @@ def func_run_automation(q, list_user_input, template_file):
 
 def main():
     root = Tk()
-    root.geometry("650x750")
+    root.geometry("650x850")  # <-Original "650x750
     root.resizable(0, 0)
     app = Example()
     root.mainloop()
