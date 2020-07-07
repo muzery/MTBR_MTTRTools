@@ -69,7 +69,7 @@ class ListCheck:
                 print("Setting not complete, web scrapping are unable to run")
                 listbox.insert(END, 'Setting not complete, web scrapping are unable to run')
 
-            if file_ext2 == '.csv':
+            if file_ext2.strip() == '.csv':
                 file_is_good1 = True
 
             info = self.date_month(listInput)

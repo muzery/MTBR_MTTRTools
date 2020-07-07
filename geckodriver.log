@@ -14,3 +14,12 @@ JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't fin
 1594079256393	Marionette	INFO	Listening on port 64346
 1594079256878	Marionette	WARN	TLS certificate errors will be ignored for this session
 JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594080172964	Marionette	INFO	Stopped listening on port 64346
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+ile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.4HVSmLCWssko"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594079985711	Marionette	INFO	Listening on port 64717
+1594079986134	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
