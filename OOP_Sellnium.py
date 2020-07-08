@@ -17,20 +17,22 @@ Title = "Issue Number" + "\t" + "Planner Code" + "\t" + "Product Description" + 
         + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" \
         + "Problem Summary"
 
+PATH = "C:\Program Files (x86)\chromedriver.exe"
+
 
 class DriverClass(webdriver.Firefox, webdriver.Ie, webdriver.Chrome):
 
     def __init__(self):
-        super().__init__()
+        #super().__init__()
         print('In Child Class')
 
     def setup_page(self, browser):
         if browser.lower() == 'ie':
             return webdriver.Ie.__init__(self)
         elif browser.lower() == 'chrome':
-            return webdriver.Chrome.__init__(self)
+            return webdriver.Chrome(PATH)
         else:
-            return webdriver.Firefox.__init__(self)
+            return webdriver.Firefox()
 
     def element_by_text_get_x_path(self, text):
         element = self.driver.find_element_by_link_text(text)
@@ -240,7 +242,7 @@ def first_page_view_control(driver, user_name, password):
     # do I need to put some checking at here?
 
 
-def tree_view_control(driver):
+def tree_view_control(driver, feature):
     # this function is control tree view
     str_construct = ''
     driver.get(driver.current_url)
@@ -249,17 +251,17 @@ def tree_view_control(driver):
     # page_source = driver.page_source
     # soup = BeautifulSoup(page_source, 'lxml')
     a = soup.find_all('li', class_='a-TreeView-node')
-    str_construct = driver.soup_parsing_by_text_name(a, "Manufacturing", ['a-TreeView-toggle'])
+    str_construct = feature.soup_parsing_by_text_name(a, "Manufacturing", ['a-TreeView-toggle'])
     driver.find_element_by_css_selector(str_construct).click()
     soup = webpage_refresh(driver)
     # soup = BeautifulSoup(page_source, 'lxml')
     b = soup.find_all('li', class_='a-TreeView-node')
-    str_construct = driver.soup_parsing_by_text_name(b, "Manufacturing Issues",
-                                                     ['a-TreeView-content', 'a-TreeView-label'])
+    str_construct = feature.soup_parsing_by_text_name(b, "Manufacturing Issues",
+                                                      ['a-TreeView-content', 'a-TreeView-label'])
     driver.find_element_by_css_selector(str_construct).click()
 
 
-def mfg_issue_view(driver, status, start_date, end_date):
+def mfg_issue_view(driver, feature, status, start_date, end_date):
     str_construct = ''
     driver.get(driver.current_url)
 
@@ -271,17 +273,17 @@ def mfg_issue_view(driver, status, start_date, end_date):
     # ----------------------------------
     soup = webpage_refresh(driver)
     # soup = BeautifulSoup(page_source, 'lxml')
-    str_construct = driver.soup_parsing_by_id_name(soup, 'select', 'P14_ORGANIZATION_CODE', ['PEN'], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'select', 'P14_ORGANIZATION_CODE', ['PEN'], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(2)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_row_select', ['200'], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_row_select', ['200'], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(2)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_search_field', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_search_field', [], 'value')
     que = driver.find_element_by_css_selector(str_construct)
     que.send_keys('PEN Mfg Test Tech')
     sleep(2)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(2)
     soup = webpage_refresh(driver)
@@ -290,42 +292,42 @@ def mfg_issue_view(driver, status, start_date, end_date):
     # str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_drop_2_c5i', [])   #<---cannot find
     # driver.find_element_by_css_selector(str_construct).click()
     sleep(2)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_search_button', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_search_button', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(5)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_search_field', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_search_field', [], 'value')
     # doing data key in
     que = driver.find_element_by_css_selector(str_construct)
     que.send_keys(status)
     sleep(2)
     # page_source = webpage_refresh(driver)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(2)
     driver.find_element_by_css_selector('#P14_ISSUES_REGION_column_search_drop_2_c2i').click()
     # str_construct = driver.soup_parsing_by_id_name(soup, '', 'P14_ISSUES_REGION_column_search_drop_2_c2i', [])
     # driver.find_element_by_css_selector(str_construct).click()
-    str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_search_button', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_search_button', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
-    str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_actions_button', [], 'value')
-    driver.find_element_by_css_selector(str_construct).click()
-    soup = webpage_refresh(driver)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_actions_menu_2i', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_actions_button', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     soup = webpage_refresh(driver)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_column_name', [], '-')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_actions_menu_2i', [], 'value')
+    driver.find_element_by_css_selector(str_construct).click()
+    soup = webpage_refresh(driver)
+    str_construct = feature.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_column_name', [], '-')
     driver.find_element_by_css_selector(str_construct).click()
     driver.find_element_by_css_selector(
         'option.DATE:nth-child(10)').click()  # <--------Special case, cannot observe any relationship
     soup = webpage_refresh(driver)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_DATE_OPT', ['between'], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_DATE_OPT', ['between'], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     soup = webpage_refresh(driver)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_between_from', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_between_from', [], 'value')
     # doing data key in
     que = driver.find_element_by_css_selector(str_construct)
     que.send_keys(start_date)
-    str_construct = driver.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_between_to', [], 'value')
+    str_construct = feature.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_between_to', [], 'value')
     # doing data key in
     que = driver.find_element_by_css_selector(str_construct)
     que.send_keys(end_date)
@@ -368,18 +370,20 @@ def logging_time(func):
     return wrapper_time
 
 
-@logging_time
-def main(user_name, password, status, start_date, end_date, source_file):
+# @logging_time
+def main(user_name, password, status, start_date, end_date, source_file, browser):
     still_have_next_page = False
-    driver = DriverClass()
+    feature = DriverClass()
+    driver = feature.setup_page(browser)
     # driver.setup_page(browser)
     first_page_view_control(driver, user_name, password)
+
     driver.implicitly_wait(5)
     # sleep(5)
-    tree_view_control(driver)
+    tree_view_control(driver, feature)
     driver.implicitly_wait(5)
     sleep(5)
-    mfg_issue_view(driver, status, start_date, end_date)
+    mfg_issue_view(driver, feature, status, start_date, end_date)
     driver.implicitly_wait(5)
     # sleep(5)
     file_save = create_new_file(source_file, 'txt')
@@ -421,5 +425,5 @@ def main(user_name, password, status, start_date, end_date, source_file):
 
 
 if __name__ == "__main__":
-    main(os.environ.get('Username'), os.environ.get('Username'), 'Closed', '1-JAN-2020', '15-JAN-2020',
+    main(os.environ.get('Username'), 'QuanQuan_90', 'Closed', '1-JAN-2020', '15-JAN-2020',
          r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_2.csv", 'firefox')

@@ -216,14 +216,14 @@ class Example(Frame):
         list_user_input = {}
         counter = 0
         if isinstance(self.mylist, Listbox):
-            for i in range(0, len(args) - 1):
+            for i in range(0, len(args)):
                 print(i)
                 # Check without is empty and the iteration is fix
                 list_user_input[key[i]] = args[i].get()
                 self.mylist.insert(END, args[i].get())
 
             list_user_input = self.status_selection(list_user_input)
-            # list_user_input = self.browser_selection(list_user_input)
+            list_user_input = self.browser_selection(list_user_input)
 
             web_scrapping_setting, compile_function, correction_function, correction_function_template = self.lc.list_checked(
                 list_user_input, self.mylist)
@@ -553,7 +553,7 @@ def data_crawling(q, list_user_input, listbox):
     # Separate process (long process)
     OOP_Sellnium.main(list_user_input['UserName'], list_user_input['Password'], list_user_input['Status'],
                       list_user_input['Start_Date'], list_user_input['End_Date'],
-                      list_user_input['SourceFile'])
+                      list_user_input['SourceFile'],list_user_input['Browser'])
     # Facebook_login.automate(list_user_input['UserName'], list_user_input['Password'], list_user_input['Status'],
     #                             list_user_input['Start_Date'], list_user_input['End_Date'],
     #                             list_user_input['SourceFile'], listbox)
@@ -581,7 +581,7 @@ def func_run_automation(q, list_user_input, template_file):
 
 def main():
     root = Tk()
-    root.geometry("650x850")  # <-Original "650x750
+    root.geometry("650x750")  # <-Original "650x750
     root.resizable(0, 0)
     app = Example()
     root.mainloop()
