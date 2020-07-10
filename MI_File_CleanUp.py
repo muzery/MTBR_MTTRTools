@@ -36,7 +36,7 @@ def data_frame_merging_filter(usr, input_file, output_file):
                                             "Status", "Type", "Category", "Assignee Name", \
                                             "Reviewer Name", "Days Open", "Test Station(s)", "Date Reported",
                                             "Last Update Date", \
-                                            "Orangization Code", "Problem Summary"], sep="\t", skiprows=1,
+                                            "Orangization Code", "Problem Summary","complete?","Days Open_2"], sep="\t", skiprows=1,
                          encoding="utf-8", )
 
         # df = pd.read_csv('C:\\Users\\willlee\\Desktop\\DataSet\\May_Data_2020_2.csv',names =["Issue Number","Planner Code","Product Description", \

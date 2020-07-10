@@ -12,10 +12,9 @@ from webpage_extraction import WebpageExtract
 Title = "Issue Number" + "\t" + "Planner Code" + "\t" + "Product Description" + "\t" + "Managment Stripe" + "\t" + \
         "P7_TEST_ITA" + "\t" + "P7_TEST_FIXTURE" + "\t" + "P7_TEST_KIT" + "\t" + "P7_POT_SERIAL_NUMBER" + "\t " + "P7_ROOT_CAUSE_TYPE_ID" + \
         "P7_ROOT_CAUSE_TYPE_ID" + "\t" + "P7_ROOT_CAUSE_SUBTYPE_ID" + "\t" + "P7_ROOT_CAUSE_DESCRIPTION" + "\t" \
-        + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
+        + "Complete?" + "\t" + "Days_Open_2" + "\t" + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
         + "Category" + "\t" + "Assignee Name" + "\t" + "Reviewer Name" + "\t" + "Days Open" + "\t" \
-        + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" \
-        + "Problem Summary"
+        + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 
@@ -23,7 +22,7 @@ PATH = "C:\Program Files (x86)\chromedriver.exe"
 class DriverClass(webdriver.Firefox, webdriver.Ie, webdriver.Chrome):
 
     def __init__(self):
-        #super().__init__()
+        # super().__init__()
         print('In Child Class')
 
     def setup_page(self, browser):

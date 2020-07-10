@@ -1,10 +1,12 @@
 from time import sleep, time
 from bs4 import BeautifulSoup as bs4
 from bs4.element import NavigableString, Tag
-from datetime import datetime, date
+from datetime import datetime, timedelta
 from tkinter import Listbox, END
 import os
 import re
+
+state = "Not Ready"
 
 
 class WebpageExtract:
@@ -15,6 +17,33 @@ class WebpageExtract:
 
     # def excel_extraction_function(self,dictonary_file_path):
     #     return Excel_Extraction.main(dictonary_file_path)
+
+    # Date and time
+    def text_to_date_conversion(self, text_list, year_to_check):
+        str_date = text_list[9]
+        # Processing text file
+        split_date = str_date.split(' ')
+        date = split_date[0].split('-')
+        d, m, y = date[0].split('-')
+        text_date = m + " " + d + " " + y
+        recorded_date = datetime.strptime(text, '%b %d %Y')  # Change date and time
+        # If more than 365 date will not check
+        if int(str(year_to_check - recorded_date).split(',')[0].split(' ')[0]) > 365:
+            return False
+        else:
+            return True
+
+    def time_date_calculation(self, date1, date2):
+        # datetimeFormat = '%Y-%m-%d %H:%M:%S'
+        datetimeFormat = '%d-%b-%Y'
+        start_date = date1.split(" ")[0]
+
+        end_date = date2.split(" ")[0]
+        # need to change time format?
+        diff = datetime.strptime(end_date, datetimeFormat) \
+               - datetime.strptime(start_date, datetimeFormat)
+
+        return diff.days
 
     def text_splitter(self, text, regex_expression, take_which_group=1):
 
@@ -48,7 +77,149 @@ class WebpageExtract:
         else:
             return match.group(take_which_group)
 
-    def __data_open_in_new_tab__(self, driver, base_address, heflink):  # <------mark as private method
+    def state_machine(self, dict_storage):
+        # state = start_count, continue_count ,suspended_count, stop_count
+        global state
+        start_date_time = None
+        lst_time_delta = []
+        open_turn = None
+        close_turn = None
+        flag_previous_stage = None
+        complete = False
+        total_time_delta = 0
+
+        # Doing rearrange-
+        for ctr in range(len(dict_storage), 0, -1):
+            list_value = dict_storage[ctr]
+            if list_value[1] == 'Open':  # it should be always open
+                state = "start_count"
+                start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
+                    self.__state_machine_status__(state=state, lst_time_delta=lst_time_delta,
+                                                  current_status_date_time=list_value[0])
+
+            elif list_value[1] == 'Waiting for 3rd Party':
+                state = "suspended_count"
+                start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
+                    self.__state_machine_status__(state=state, start_date_time=start_date_time,
+                                                  current_status_date_time=list_value[0],
+                                                  lst_time_delta=lst_time_delta, open_turn=open_turn,
+                                                  flag_previous_stage=flag_previous_stage)
+
+            elif list_value[1] == 'Closed':
+                state = "stop_count"
+                start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
+                    self.__state_machine_status__(state=state, start_date_time=start_date_time,
+                                                  current_status_date_time=list_value[0],
+                                                  lst_time_delta=lst_time_delta, open_turn=open_turn)
+
+            elif list_value[1] == 'In Review' or list_value[1] == "In Work":
+                state = "continue_count"
+                start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
+                    self.__state_machine_status__(state=state, start_date_time=start_date_time,
+                                                  flag_previous_stage=flag_previous_stage,
+                                                  current_status_date_time=list_value[0],
+                                                  lst_time_delta=lst_time_delta, open_turn=open_turn)
+            else:
+                state = "continue_count"
+
+        if open_turn and close_turn:
+            complete = 'True'
+
+        if len(lst_time_delta) >= 0:
+            for time_delta in lst_time_delta:
+                total_time_delta += time_delta
+
+        return complete, str(total_time_delta)
+
+    def __state_machine_status__(self, state=None, start_date_time=None, current_status_date_time=None,
+                                 flag_previous_stage="", lst_time_delta=None, open_turn=False, close_turn=False):
+        # return start_date_time, lst_time_delta, open_turn,cdatetime.strptime('14-4-2020 10:24:59', '%d-%m-%y %H:%M:%S')lose_turn,flag_previous_stage
+        time = 0
+
+        if state is "start_count":  # for status is Open
+            # capture start time
+            return current_status_date_time, lst_time_delta, True, False, None
+
+        if state is "suspended_count":  # for status is Waiting for 3rd Party
+            # capture time different
+            # casting the time and date difference
+            print(flag_previous_stage)
+            if flag_previous_stage == "3rd Party":
+                # flow thru without doing anything
+                return None, lst_time_delta, open_turn, close_turn, "3rd Party"
+
+            else:
+                print(start_date_time)
+                print(current_status_date_time)
+                days_open = self.time_date_calculation(start_date_time, current_status_date_time)
+                lst_time_delta.append(days_open)
+                return None, lst_time_delta, open_turn, close_turn, "3rd Party"
+
+        if state is "stop_count":  # for status is Closed
+            # calculation
+            print(start_date_time)
+            print(current_status_date_time)
+            days_open = self.time_date_calculation(start_date_time, current_status_date_time)
+            lst_time_delta.append(days_open)
+            return None, lst_time_delta, True, True, None
+
+        if state is "continue_count":  # Read for rhe flag or other state
+            if flag_previous_stage == "3rd Party":
+                # reset the flag
+                return current_status_date_time, lst_time_delta, open_turn, close_turn, None
+            else:
+                # Bypass
+                print("Continue calculating")
+                return start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage
+
+        else:  # for status is in work , in review time no need calculation as activity inb working status
+            # doing nothing
+            print("Continue calculating")
+            return start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage
+
+    def retreive_history_table(self, driver, base_address):
+        complete = False
+        total_time_delta = []
+        dict_storage = {}
+        date_status_storage = []
+        page_source = driver.page_source
+        soup = bs4(page_source, 'html')
+        link = soup.find(
+            lambda tag: tag.name == 'button' and tag.has_attr('id') and tag['id'] == 'P7_SHOW_CHANGE_LOG_BUTTON_ID')
+        text = link.attrs['onclick']
+        reflink_address = self.text_splitter(text, '\(\'(.*)\',{', 1)
+        reflink_address = reflink_address.replace("\\u0026", "&")
+        history_address = base_address + reflink_address
+        driver.execute_script("window.open('');")
+        # Switch to the new window and open URL B
+        driver.switch_to.window(driver.window_handles[2])
+        driver.get(history_address)
+        sleep(5)
+        # reload the table
+        page_source = driver.page_source
+        sleep(2)
+        soup = bs4(page_source, 'html')
+        returnValue = []
+        tables = soup.findAll('table', class_='t-Report-report')
+        if isinstance(tables, list) and len(tables) >= 0:
+            for table in tables:
+                if len(table) >= 0:
+                    for ctr in range(1, len(table.findAll('tr')), 1):
+                        # Get  all the table data
+                        # <--- Reference TableData.PNG
+                        # Get 0 and 4 only
+                        date_status_storage.append(table.findAll('tr')[ctr].findAll('td')[0].text)
+                        date_status_storage.append(table.findAll('tr')[ctr].findAll('td')[4].text)
+                        dict_storage[ctr] = date_status_storage
+                        date_status_storage = []
+                # ignore second table
+                break
+
+        complete, total_time_delta = self.state_machine(dict_storage)
+        return complete, total_time_delta
+        # storage all status on that particular MI
+
+    def __data_open_in_new_tab__(self, driver, soup, base_address, heflink):  # <------mark as private method
         Full_addr = base_address + heflink
         # Open Window
         driver.execute_script("window.open('');")
@@ -88,9 +259,18 @@ class WebpageExtract:
         # 4:['P7_TEST_STATION_INFORMATION_REGION_heading','Test Stations',r'Test ITA\(s\)\s+(\w+)\s××',1]}
 
         output_list = self.__webpage_extract__(driver, dictonary_for_extraction)
-
+        # <------------------------------- Handle History--------------------------------------------------------->
+        sleep(2)
+        # driver.find_element_by_id('P7_SHOW_CHANGE_LOG_BUTTON_ID').click()
+        # Add on in the output list
+        status, days = self.retreive_history_table(driver, base_address)
+        output_list.append(status)
+        output_list.append(days)
+        # <--------------------------------------End------------------------------------------------------->
         print("Current Page Title is : %s" % driver.title)  # Close the tab with URL B
         driver.close()  # Switch back to the first tab with URL A
+        driver.switch_to.window(driver.window_handles[1])
+        driver.close()
         driver.switch_to.window(driver.window_handles[0])
         print("Current Page Title is : %s" % driver.title)
         return output_list
@@ -111,11 +291,12 @@ class WebpageExtract:
                         # Since array[0] having all information, we just access first one only
                         #                   for single_rev_div in review_div[0]:
                         for single_content in review_div[0].contents:
-                            # look for whether it is bs4.ewlement.Tag (Hardcoded)
+                            # look for whether it is bs4.element.Tag (Hardcoded)
                             if isinstance(single_content, Tag):
                                 # find for the banner that interested
                                 try:
                                     # single_content.find('h2',id = j[0]).text == j[1]:
+                                    page_source = driver.page_source
                                     if single_content.find(j[1], id=j[2]).text == j[3]:
                                         # directly goto contents[3]
                                         string_to_process = single_content.contents[3].text
@@ -282,7 +463,7 @@ class WebpageExtract:
                 if column == 0:
                     text_out = self.text_splitter(str(td), r"<a\s+(?:[^>]*?\s+)?href=([\"\'])(.*?)\1", 2)
                     # Open as a new Tab
-                    output = self.__data_open_in_new_tab__(driver, base_addr, text_out)
+                    output = self.__data_open_in_new_tab__(driver, soup, base_addr, text_out)
                     for single_output in output: t_row.append(single_output)
                     column = column + 1  # To disable for other column to open
             if write_in:
