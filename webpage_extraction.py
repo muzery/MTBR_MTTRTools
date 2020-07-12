@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 from tkinter import Listbox, END
 import os
 import re
+import pandas as pd
+import numpy as np
 
 state = "Not Ready"
 
@@ -110,7 +112,9 @@ class WebpageExtract:
                 start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
                     self.__state_machine_status__(state=state, start_date_time=start_date_time,
                                                   current_status_date_time=list_value[0],
-                                                  lst_time_delta=lst_time_delta, open_turn=open_turn)
+                                                  lst_time_delta=lst_time_delta, open_turn=open_turn,
+                                                  flag_previous_stage=flag_previous_stage
+                                                  )
 
             elif list_value[1] == 'In Review' or list_value[1] == "In Work":
                 state = "continue_count"
@@ -157,11 +161,15 @@ class WebpageExtract:
 
         if state is "stop_count":  # for status is Closed
             # calculation
-            print(start_date_time)
-            print(current_status_date_time)
-            days_open = self.time_date_calculation(start_date_time, current_status_date_time)
-            lst_time_delta.append(days_open)
-            return None, lst_time_delta, True, True, None
+            if flag_previous_stage != 'closed':
+                print(start_date_time)
+                print(current_status_date_time)
+                days_open = self.time_date_calculation(start_date_time, current_status_date_time)
+                lst_time_delta.append(days_open)
+                return None, lst_time_delta, True, True, 'closed'
+            else:
+                # if first closed detected, assume end and remaining closed will ignored unless next open is read
+                return None, lst_time_delta, True, True, None
 
         if state is "continue_count":  # Read for rhe flag or other state
             if flag_previous_stage == "3rd Party":
@@ -219,7 +227,8 @@ class WebpageExtract:
         return complete, total_time_delta
         # storage all status on that particular MI
 
-    def __data_open_in_new_tab__(self, driver, soup, base_address, heflink):  # <------mark as private method
+    def __data_open_in_new_tab__(self, driver, soup, base_address, heflink,
+                                 update_status):  # <------mark as private method
         Full_addr = base_address + heflink
         # Open Window
         driver.execute_script("window.open('');")
@@ -260,16 +269,18 @@ class WebpageExtract:
 
         output_list = self.__webpage_extract__(driver, dictonary_for_extraction)
         # <------------------------------- Handle History--------------------------------------------------------->
-        sleep(2)
+
         # driver.find_element_by_id('P7_SHOW_CHANGE_LOG_BUTTON_ID').click()
         # Add on in the output list
-        status, days = self.retreive_history_table(driver, base_address)
-        output_list.append(status)
-        output_list.append(days)
-        # <--------------------------------------End------------------------------------------------------->
-        print("Current Page Title is : %s" % driver.title)  # Close the tab with URL B
-        driver.close()  # Switch back to the first tab with URL A
-        driver.switch_to.window(driver.window_handles[1])
+        if update_status == "Party":
+            sleep(2)
+            status, days = self.retreive_history_table(driver, base_address)
+            output_list.append(status)
+            output_list.append(days)
+            # <--------------------------------------End------------------------------------------------------->
+            print("Current Page Title is : %s" % driver.title)  # Close the tab with URL B
+            driver.close()  # Switch back to the first tab with URL A
+            driver.switch_to.window(driver.window_handles[1])
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
         print("Current Page Title is : %s" % driver.title)
@@ -421,7 +432,7 @@ class WebpageExtract:
                 text = self.__list_to_string__(text_list)
                 fp.write(text + "\n")
 
-    def table_lookup(self, driver, this_page):
+    def table_lookup(self, driver, this_page, update_status):
         # Should be DateNow
         ctr = 0
         year_to_check = datetime.now()
@@ -463,7 +474,7 @@ class WebpageExtract:
                 if column == 0:
                     text_out = self.text_splitter(str(td), r"<a\s+(?:[^>]*?\s+)?href=([\"\'])(.*?)\1", 2)
                     # Open as a new Tab
-                    output = self.__data_open_in_new_tab__(driver, soup, base_addr, text_out)
+                    output = self.__data_open_in_new_tab__(driver, soup, base_addr, text_out, update_status)
                     for single_output in output: t_row.append(single_output)
                     column = column + 1  # To disable for other column to open
             if write_in:
@@ -490,3 +501,16 @@ class WebpageExtract:
         if len(rows) - 1 == ctr:
             return True, this_page
         return False, this_page
+
+
+class DataFrameFeature:
+    # https: // stackoverflow.com / questions / 31247198 / python - pandas - write - content - of - dataframe - into - text - file
+    def column_swapping(self, file_to_open, column_to_swap, drop_col_bool, title):
+        # column_to_swap = list
+        data = pd.read_csv(file_to_open, sep="\t")
+        # need to test it out for actual column
+        data[column_to_swap[1]] = data[column_to_swap[0]]
+        if drop_col_bool:
+            data = data.drop(axis=1, columns=["Complete?", "Days_Open_2"])
+        # save the data frame back into txt file
+        np.savetxt(file_to_open, data.values, delimiter="\t", header=title, fmt="%s")

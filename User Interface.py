@@ -189,6 +189,8 @@ class Example(Frame):
         if list_user_input['Status'] == 1:
             list_user_input['Status'] = "Closed"
         elif list_user_input['Status'] == 2:
+            list_user_input['Status'] = "Closed_Party"
+        elif list_user_input['Status'] == 3:
             list_user_input['Status'] = "Waiting for 3rd Party"
         else:
             list_user_input['Status'] = "Nothing"
@@ -368,13 +370,16 @@ class Example(Frame):
         frame19.pack(fill=BOTH, expand=False)
 
         status = IntVar()
-        rdo3 = Radiobutton(frame19, text='Closed', variable=status, value=1)
+        rdo3 = Radiobutton(frame19, text='Closed(continue count)', variable=status, value=1)
         rdo3.pack(side=LEFT, anchor=N, padx=5, pady=5)
         status.set(1)
         # chk1.pack(side=BOTTOM)
 
-        rdo4 = Radiobutton(frame19, text='Waiting for 3rd Party', variable=status, value=2)
-        rdo4.pack(side=LEFT, anchor=W, padx=5, pady=5)
+        rdo6 = Radiobutton(frame19, text='Closed(included Waiting)', variable=status, value=2)
+        rdo6.pack(side=LEFT, anchor=W, padx=5, pady=5)
+
+        rdo5 = Radiobutton(frame19, text='Waiting for 3rd Party', variable=status, value=3)
+        rdo5.pack(side=LEFT, anchor=W, padx=5, pady=5)
 
         # -------------Source File---------------------------#
         source_file = StringVar()

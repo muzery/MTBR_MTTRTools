@@ -5,16 +5,23 @@ from time import sleep, time
 from bs4.element import NavigableString, Tag
 import os
 import functools
-from webpage_extraction import WebpageExtract
+from webpage_extraction import WebpageExtract, DataFrameFeature
 
 # https://qxf2.com/blog/auto-generate-xpaths-using-python/
 # here is hardcoded
 Title = "Issue Number" + "\t" + "Planner Code" + "\t" + "Product Description" + "\t" + "Managment Stripe" + "\t" + \
         "P7_TEST_ITA" + "\t" + "P7_TEST_FIXTURE" + "\t" + "P7_TEST_KIT" + "\t" + "P7_POT_SERIAL_NUMBER" + "\t " + "P7_ROOT_CAUSE_TYPE_ID" + \
         "P7_ROOT_CAUSE_TYPE_ID" + "\t" + "P7_ROOT_CAUSE_SUBTYPE_ID" + "\t" + "P7_ROOT_CAUSE_DESCRIPTION" + "\t" \
-        + "Complete?" + "\t" + "Days_Open_2" + "\t" + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
+        + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
         + "Category" + "\t" + "Assignee Name" + "\t" + "Reviewer Name" + "\t" + "Days Open" + "\t" \
         + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
+
+Title_Party = "Issue Number" + "\t" + "Planner Code" + "\t" + "Product Description" + "\t" + "Managment Stripe" + "\t" + \
+              "P7_TEST_ITA" + "\t" + "P7_TEST_FIXTURE" + "\t" + "P7_TEST_KIT" + "\t" + "P7_POT_SERIAL_NUMBER" + "\t " + "P7_ROOT_CAUSE_TYPE_ID" + \
+              "P7_ROOT_CAUSE_TYPE_ID" + "\t" + "P7_ROOT_CAUSE_SUBTYPE_ID" + "\t" + "P7_ROOT_CAUSE_DESCRIPTION" + "\t" \
+              + "Complete?" + "\t" + "Days_Open_2" + "\t" + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
+              + "Category" + "\t" + "Assignee Name" + "\t" + "Reviewer Name" + "\t" + "Days Open" + "\t" \
+              + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 
@@ -274,14 +281,14 @@ def mfg_issue_view(driver, feature, status, start_date, end_date):
     # soup = BeautifulSoup(page_source, 'lxml')
     str_construct = feature.soup_parsing_by_id_name(soup, 'select', 'P14_ORGANIZATION_CODE', ['PEN'], 'value')
     driver.find_element_by_css_selector(str_construct).click()
-    sleep(2)
+    sleep(3)
     str_construct = feature.soup_parsing_by_id_name(soup, 'select', 'P14_ISSUES_REGION_row_select', ['200'], 'value')
     driver.find_element_by_css_selector(str_construct).click()
-    sleep(2)
+    sleep(3)
     str_construct = feature.soup_parsing_by_id_name(soup, 'input', 'P14_ISSUES_REGION_search_field', [], 'value')
     que = driver.find_element_by_css_selector(str_construct)
     que.send_keys('PEN Mfg Test Tech')
-    sleep(2)
+    sleep(3)
     str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(2)
@@ -356,6 +363,14 @@ def teardown(driver):
     print("Finished")
 
 
+def analyzing_status(status):
+    lst = status.split("_")
+    if len(lst) == 2:
+        return lst[0], lst[1]
+    else:
+        return lst[0], None
+
+
 # put an decorator for time recording
 def logging_time(func):
     @functools.wraps(func)
@@ -371,29 +386,34 @@ def logging_time(func):
 
 # @logging_time
 def main(user_name, password, status, start_date, end_date, source_file, browser):
+    title1 = ""
+    df_ctrl = DataFrameFeature()
     still_have_next_page = False
+    update_status = analyzing_status(status)
     feature = DriverClass()
     driver = feature.setup_page(browser)
     # driver.setup_page(browser)
     first_page_view_control(driver, user_name, password)
 
     driver.implicitly_wait(5)
-    # sleep(5)
+    sleep(5)
     tree_view_control(driver, feature)
     driver.implicitly_wait(5)
     sleep(5)
-    mfg_issue_view(driver, feature, status, start_date, end_date)
+    mfg_issue_view(driver, feature, update_status[0], start_date, end_date)
     driver.implicitly_wait(5)
-    # sleep(5)
+    sleep(5)
     file_save = create_new_file(source_file, 'txt')
-    extract = WebpageExtract(file_save, Title)
+    title1 = Title_Party if update_status[1] == 'Party' else Title
+    extract = WebpageExtract(file_save, title1)
     print(file_save)
     driver.implicitly_wait(5)
-    # sleep(5)
+    sleep(5)
     default_page = "ABC"
     while True:
         table_complete, next_page_number = extract.table_lookup(driver,
-                                                                default_page)  # make sure whole page is complete, else test will stop
+                                                                default_page, update_status[
+                                                                    1])  # make sure whole page is complete, else test will stop
         try:
             if driver.find_element_by_css_selector('.icon-right-chevron'):
                 driver.find_element_by_css_selector('.icon-right-chevron').click()
@@ -419,10 +439,13 @@ def main(user_name, password, status, start_date, end_date, source_file, browser
 
     print()
     teardown(driver)
+    if update_status[1] == 'Party':
+        Title1 = Title
+        df_ctrl.column_swapping(file_save, ["Days_Open_2", "Days Open"], True, Title1)
     rename_file_ext(file_save, '.csv')
     return "Finish"
 
 
 if __name__ == "__main__":
     main(os.environ.get('Username'), 'QuanQuan_90', 'Closed', '1-JAN-2020', '15-JAN-2020',
-         r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_2.csv", 'firefox')
+         r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_2.txt", 'firefox')
