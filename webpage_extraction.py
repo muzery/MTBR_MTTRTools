@@ -7,6 +7,7 @@ import os
 import re
 import pandas as pd
 import numpy as np
+import multiprocessing as mp
 
 state = "Not Ready"
 
@@ -460,6 +461,7 @@ class WebpageExtract:
         # ------------------------------------------------------------------------------------------------------------
         table = soup.find(lambda tag: tag.name == 'table' and tag.has_attr('id') and tag['id'] == '4125346614174390009')
         rows = table.findAll('tr')
+        #read table rows to see amount of row and think multiprocessing
         for row in rows:
             column = 0
             write_in = False
