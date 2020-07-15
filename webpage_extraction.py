@@ -7,8 +7,8 @@ import os
 import re
 import pandas as pd
 import numpy as np
-import multiprocessing as mp
-
+import multiprocessing
+import math
 state = "Not Ready"
 
 
@@ -85,8 +85,8 @@ class WebpageExtract:
         global state
         start_date_time = None
         lst_time_delta = []
-        open_turn = None
-        close_turn = None
+        open_turn = False
+        close_turn = False
         flag_previous_stage = None
         complete = False
         total_time_delta = 0
@@ -96,9 +96,10 @@ class WebpageExtract:
             list_value = dict_storage[ctr]
             if list_value[1] == 'Open':  # it should be always open
                 state = "start_count"
-                start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
-                    self.__state_machine_status__(state=state, lst_time_delta=lst_time_delta,
-                                                  current_status_date_time=list_value[0])
+                if not open_turn:
+                    start_date_time, lst_time_delta, open_turn, close_turn, flag_previous_stage = \
+                        self.__state_machine_status__(state=state, lst_time_delta=lst_time_delta,
+                                                      current_status_date_time=list_value[0])
 
             elif list_value[1] == 'Waiting for 3rd Party':
                 state = "suspended_count"
@@ -433,6 +434,78 @@ class WebpageExtract:
                 text = self.__list_to_string__(text_list)
                 fp.write(text + "\n")
 
+    def multi_data_process(self, driver, rows, soup, this_page, update_status, base_addr):
+
+        for row in rows:
+            column = 0
+            write_in = False
+            print(row)
+            t_row = []
+            for td in row.findAll('td'):
+                # Put into list
+                print(td.text)
+
+                t_row.append(td.text)
+                write_in = True
+                if column == 0:
+                    text_out = self.text_splitter(str(td), r"<a\s+(?:[^>]*?\s+)?href=([\"\'])(.*?)\1", 2)
+                    # Open as a new Tab
+                    output = self.__data_open_in_new_tab__(driver, soup, base_addr, text_out, update_status)
+                    for single_output in output: t_row.append(single_output)
+                    column = column + 1  # To disable for other column to open
+            if write_in:
+                # Date and time to checking
+                #            if text_to_date_conversion(t_row, year_to_check):
+                # data_presentation_textfile_pickle(t_row,0)
+                ctr = ctr + 1
+                self.__data_presentation_textfile__(t_row, 0)
+            # ------------------------------------------------------------------------------------------------------------
+            # finding whether the arrow being found -- for last page use only
+            # try:
+            #     if driver.find_element_by_xpath(
+            #             "/html/body/form/div[2]/div[2]/div[2]/div/div/div[2]/div/div/div/div/div[2]/div[2]/div[6]/div[2]/ul/li[3]/button"):
+            #         driver.find_element_by_xpath(
+            #             "/html/body/form/div[2]/div[2]/div[2]/div/div/div[2]/div/div/div/div/div[2]/div[2]/div[6]/div[2]/ul/li[3]/button").click()
+            #         still_have_next_page = True
+            # except:
+            #     print("Not Next Button being Found! Program End Now")
+            #
+            #     return False, this_page
+            # else:
+            #     return still_have_next_page, this_page
+            # put need to put end of the file
+        if len(rows) - 1 == ctr:
+            return True, this_page
+        return False, this_page
+
+    def multi_process_read(self,rows, this_page, driver, soup, base_addr, update_status, start_value, end_value,ctr):
+        for i in range(start_value,end_value,ctr):
+            column = 0
+            write_in = False
+            print(rows[i])
+            t_row = []
+            for td in rows[i].findAll('td'):
+                # Put into list
+                print(td.text)
+                t_row.append(td.text)
+                write_in = True
+                if column == 0:
+                    text_out = self.text_splitter(str(td), r"<a\s+(?:[^>]*?\s+)?href=([\"\'])(.*?)\1", 2)
+                    # Open as a new Tab
+                    output = self.__data_open_in_new_tab__(driver, soup, base_addr, text_out, update_status)
+                    for single_output in output: t_row.append(single_output)
+                    column = column + 1  # To disable for other column to open
+            if write_in:
+                # Date and time to checking
+                #            if text_to_date_conversion(t_row, year_to_check):
+                # data_presentation_textfile_pickle(t_row,0)
+                ctr = ctr + 1
+                self.__data_presentation_textfile__(t_row, 0)
+
+        if len(rows) - 1 == ctr:
+            return True, this_page
+        return False, this_page
+    
     def table_lookup(self, driver, this_page, update_status):
         # Should be DateNow
         ctr = 0
@@ -459,9 +532,17 @@ class WebpageExtract:
                 this_page = pag_num.text
         # Data Process
         # ------------------------------------------------------------------------------------------------------------
+        # Single Process
         table = soup.find(lambda tag: tag.name == 'table' and tag.has_attr('id') and tag['id'] == '4125346614174390009')
         rows = table.findAll('tr')
+        # read number of rows
+        #half_row = rows / 2
+        # create 2 processes
+        #p1 = multiprocessing.Process(target=self.multi_process_read, args=(rows, 0, int(quarter_row) - 1, 1, return_ls1))
+        #p2 = multiprocessing.Process(target=self.multi_process_read, args=(rows, 0, int(quarter_row) - 1, 1, return_ls1))
+        #self.multi_data_process(driver, rows, soup, this_page, update_status, base_addr)
         #read table rows to see amount of row and think multiprocessing
+
         for row in rows:
             column = 0
             write_in = False
@@ -509,7 +590,7 @@ class DataFrameFeature:
     # https: // stackoverflow.com / questions / 31247198 / python - pandas - write - content - of - dataframe - into - text - file
     def column_swapping(self, file_to_open, column_to_swap, drop_col_bool, title):
         # column_to_swap = list
-        data = pd.read_csv(file_to_open, sep="\t")
+        data = pd.read_csv(file_to_open, sep="\t",encoding ='latin1')
         # need to test it out for actual column
         data[column_to_swap[1]] = data[column_to_swap[0]]
         if drop_col_bool:

@@ -946,3 +946,219 @@ JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: Re
 
 ###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
 
+1594614913880	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.M2v1bBZ0yBnC"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594614917480	Marionette	INFO	Listening on port 52901
+1594614917712	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594615943222	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.2sJjwmOj42tD"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594615945194	Marionette	INFO	Listening on port 56721
+1594615945346	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594617313606	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.SsO2PcpB49R8"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594617319552	Marionette	INFO	Listening on port 56901
+1594617319640	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+[Parent 12900, Gecko_IOThread] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc, line 166
+JavaScript error: resource:///actors/AboutReaderChild.jsm, line 95: NS_ERROR_UNEXPECTED: 
+g753S07"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594624167096	Marionette	INFO	Listening on port 57643
+1594624167195	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594683543565	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.jHkGQa6bznj0"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594683548143	Marionette	INFO	Listening on port 59660
+1594683548590	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594684976079	Marionette	INFO	Stopped listening on port 59660
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+ile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.H4PXoGss5pdX"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594683866913	Marionette	INFO	Listening on port 59850
+1594683867168	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594684974214	Marionette	INFO	Stopped listening on port 59850
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+rce://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594684109693	Marionette	INFO	Listening on port 60163
+1594684109758	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594684396633	Marionette	INFO	Stopped listening on port 60163
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+rce://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594684392768	Marionette	INFO	Listening on port 60303
+1594684392847	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594685515743	Marionette	INFO	Stopped listening on port 60303
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594686460071	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.gwXSR5xnas1C"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594686462858	Marionette	INFO	Listening on port 61047
+1594686463290	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+JavaScript error: https://apex.natinst.com/i/libraries/apex/minified/widget.interactiveReport.min.js?v=18.2.0.00.12, line 1: SyntaxError: JSON.parse: unexpected character at line 1 column 1 of the JSON data
+1594687427486	Marionette	INFO	Stopped listening on port 61047
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+rce://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594687250561	Marionette	INFO	Listening on port 61367
+1594687250977	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594689644825	Marionette	INFO	Stopped listening on port 61367
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594691013962	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.Vgsop2GWd7H9"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594691016596	Marionette	INFO	Listening on port 62410
+1594691016687	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594693649860	Marionette	INFO	Stopped listening on port 62410
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594694128605	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.ejgo6nhOGnTR"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594694133548	Marionette	INFO	Listening on port 63409
+1594694134043	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594697393391	Marionette	INFO	Stopped listening on port 63409
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PLayerTransaction::Msg_ReleaseLayer Processing error: message was deserialized, but the handler returned false (indicating failure)
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594711127408	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.JWA2KkMx9zJG"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594711130773	Marionette	INFO	Listening on port 62256
+1594711131235	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+JavaScript error: https://apex.natinst.com/i/libraries/apex/minified/desktop_all.min.js?v=18.2.0.00.12, line 19: TypeError: a is undefined
+JavaScript error: https://apex.natinst.com/i/libraries/apex/minified/desktop_all.min.js?v=18.2.0.00.12, line 19: TypeError: a is undefined
+1594711377415	Marionette	INFO	Stopped listening on port 62256
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594711447954	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.TvC2INp3UwOs"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594711451689	Marionette	INFO	Listening on port 62580
+1594711451817	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594711707691	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.n1szIHzzmw5L"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594711710719	Marionette	INFO	Listening on port 62742
+1594711710938	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+JavaScript error: https://apex.natinst.com/i/libraries/apex/minified/desktop_all.min.js?v=18.2.0.00.12, line 2: NS_ERROR_NOT_INITIALIZED: 
+1594712778774	Marionette	INFO	Stopped listening on port 62742
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594712804803	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.S1RUEUgIVrKn"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594712807553	Marionette	INFO	Listening on port 63253
+1594712808034	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+JavaScript error: resource:///modules/sessionstore/SessionSaver.jsm, line 53: Error: TelemetryStopwatch: key "FX_SESSION_RESTORE_COLLECT_DATA_MS" was already initialized
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 4075: Error: TelemetryStopwatch: key "FX_SESSION_RESTORE_COLLECT_ALL_WINDOWS_DATA_MS" was already initialized
+JavaScript error: resource:///modules/sessionstore/SessionStore.jsm, line 4094: Error: TelemetryStopwatch: requesting elapsed time for nonexisting stopwatch. Histogram: "FX_SESSION_RESTORE_COLLECT_ALL_WINDOWS_DATA_MS", key: ""
+JavaScript error: resource:///modules/sessionstore/SessionSaver.jsm, line 53: Error: TelemetryStopwatch: requesting elapsed time for nonexisting stopwatch. Histogram: "FX_SESSION_RESTORE_COLLECT_DATA_MS", key: ""
+JavaScript error: resource:///actors/AboutReaderChild.jsm, line 95: NS_ERROR_UNEXPECTED: 
+JavaScript error: resource:///actors/AboutReaderChild.jsm, line 95: NS_ERROR_UNEXPECTED: 
+JavaScript error: resource:///actors/AboutReaderChild.jsm, line 95: NS_ERROR_UNEXPECTED: 
+1594715798875	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.dUrEuyQHyckC"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594715803906	Marionette	INFO	Listening on port 64115
+1594715803926	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+JavaScript error: https://apex.natinst.com/apex/f?p=100:101::::::&notification_msg=SW52YWxpZCB1c2VyIG5hbWUgb3IgcGFzc3dvcmQuPGRpdiBpZD0iYXBleF9sb2dp.,bl90aHJvdHRsZV9kaXYiPlBsZWFzZSB3YWl0IDxzcGFuIGlkPSJhcGV4X2xvZ2lu.,X3Rocm90dGxlX3NlYyI-NTwvc3Bhbj4gc2Vjb25kcyB0byBsb2dpbiBhZ2Fpbi48.,L2Rpdj4%7E%2FU8R97UAT7POIT7QXR4RBQCAjI-9kyC0qFvUk6S23ac4CeEakDyUVMFNNy8dzQfNukB6wMEQsfu3jk6vuDzzl3Q, line 148: ReferenceError: html_GetElement is not defined
+JavaScript error: https://apex.natinst.com/apex/f?p=100:101::::::&notification_msg=SW52YWxpZCB1c2VyIG5hbWUgb3IgcGFzc3dvcmQuPGRpdiBpZD0iYXBleF9sb2dp.,bl90aHJvdHRsZV9kaXYiPlBsZWFzZSB3YWl0IDxzcGFuIGlkPSJhcGV4X2xvZ2lu.,X3Rocm90dGxlX3NlYyI-NTwvc3Bhbj4gc2Vjb25kcyB0byBsb2dpbiBhZ2Fpbi48.,L2Rpdj4%7E%2FU8R97UAT7POIT7QXR4RBQCAjI-9kyC0qFvUk6S23ac4CeEakDyUVMFNNy8dzQfNukB6wMEQsfu3jk6vuDzzl3Q, line 148: ReferenceError: html_GetElement is not defined
+1594715829721	Marionette	INFO	Stopped listening on port 64115
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594715850748	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.6aJB4ppFtxKw"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594715854627	Marionette	INFO	Listening on port 64252
+1594715855072	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594718373502	Marionette	INFO	Stopped listening on port 64252
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594718882681	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.6S8qo40nUICu"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594718885368	Marionette	INFO	Listening on port 62835
+1594718885406	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594721396501	Marionette	INFO	Stopped listening on port 62835
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594782808117	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.pgRXKq5cc47s"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594782811106	Marionette	INFO	Listening on port 64023
+1594782811342	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594783628052	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\willlee\\AppData\\Local\\Temp\\rust_mozprofile.T7qxgt0vvtI1"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594783630576	Marionette	INFO	Listening on port 64390
+1594783630799	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://apex.natinst.com/apex/f?p=NIAPEXMENU:101, line 132: ReferenceError: html_GetElement is not defined
+1594786169298	Marionette	INFO	Stopped listening on port 64390
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+

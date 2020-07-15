@@ -291,13 +291,13 @@ def mfg_issue_view(driver, feature, status, start_date, end_date):
     sleep(3)
     str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
-    sleep(2)
+    sleep(3)
     soup = webpage_refresh(driver)
     driver.find_element_by_css_selector('#P14_ISSUES_REGION_column_search_drop_2_c5i').click()
     # unable to work on small window
     # str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_drop_2_c5i', [])   #<---cannot find
     # driver.find_element_by_css_selector(str_construct).click()
-    sleep(2)
+    sleep(3)
     str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_search_button', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(5)
@@ -439,13 +439,13 @@ def main(user_name, password, status, start_date, end_date, source_file, browser
 
     print()
     teardown(driver)
-    if update_status[1] == 'Party':
-        Title1 = Title
-        df_ctrl.column_swapping(file_save, ["Days_Open_2", "Days Open"], True, Title1)
-    rename_file_ext(file_save, '.csv')
+    # if update_status[1] == 'Party':
+    #     Title1 = Title
+    #     df_ctrl.column_swapping(file_save, ["Days_Open_2", "Days Open"], True, Title1)
+    # rename_file_ext(file_save, '.csv')
     return "Finish"
 
 
 if __name__ == "__main__":
-    main(os.environ.get('Username'), 'QuanQuan_90', 'Closed', '1-JAN-2020', '15-JAN-2020',
-         r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_2.txt", 'firefox')
+    main(os.environ.get('Username'), 'QuanQuan_90', 'Closed_Party', '1-JUN-2020', '15-JUL-2020',
+         r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_AllAAA.txt", 'firefox')
