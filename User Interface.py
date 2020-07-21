@@ -387,7 +387,7 @@ class Example(Frame):
         frame5 = Frame(self)
         frame5.pack(fill=BOTH, expand=False)
 
-        lbl5 = Label(frame5, text="Source File(.csv)/File to Save (for webscrapping)(.csv)", width=30)
+        lbl5 = Label(frame5, text="Source File/File to Save(data from web)(.txt)", width=30)
         lbl5.pack(side=LEFT, anchor=N, padx=5, pady=5)
 
         entry5 = Entry(frame5, textvariable=source_file)

@@ -14,14 +14,14 @@ Title = "Issue Number" + "\t" + "Planner Code" + "\t" + "Product Description" + 
         "P7_ROOT_CAUSE_TYPE_ID" + "\t" + "P7_ROOT_CAUSE_SUBTYPE_ID" + "\t" + "P7_ROOT_CAUSE_DESCRIPTION" + "\t" \
         + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
         + "Category" + "\t" + "Assignee Name" + "\t" + "Reviewer Name" + "\t" + "Days Open" + "\t" \
-        + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
+        + "Test Stations Used" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
 
 Title_Party = "Issue Number" + "\t" + "Planner Code" + "\t" + "Product Description" + "\t" + "Managment Stripe" + "\t" + \
               "P7_TEST_ITA" + "\t" + "P7_TEST_FIXTURE" + "\t" + "P7_TEST_KIT" + "\t" + "P7_POT_SERIAL_NUMBER" + "\t " + "P7_ROOT_CAUSE_TYPE_ID" + \
               "P7_ROOT_CAUSE_TYPE_ID" + "\t" + "P7_ROOT_CAUSE_SUBTYPE_ID" + "\t" + "P7_ROOT_CAUSE_DESCRIPTION" + "\t" \
               + "Complete?" + "\t" + "Days_Open_2" + "\t" + "Severity" + "\t" + "Status" + "\t" + "Type" + "\t" \
               + "Category" + "\t" + "Assignee Name" + "\t" + "Reviewer Name" + "\t" + "Days Open" + "\t" \
-              + "Test Station(s)" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
+              + "Test Stations Used" + "\t" + "Date Reported" + "\t" + "Last Update Date" + "\t" + "Orangization Code" + "\t" + "Problem Summary"
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 
@@ -439,10 +439,10 @@ def main(user_name, password, status, start_date, end_date, source_file, browser
 
     print()
     teardown(driver)
-    # if update_status[1] == 'Party':
-    #     Title1 = Title
-    #     df_ctrl.column_swapping(file_save, ["Days_Open_2", "Days Open"], True, Title1)
-    # rename_file_ext(file_save, '.csv')
+    if update_status[1] == 'Party':
+        Title1 = Title
+        df_ctrl.column_swapping(file_save, ["Days_Open_2", "Days Open"], True, Title1)
+    #rename_file_ext(file_save, '.csv') # Able to work at txt file
     return "Finish"
 
 

@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import Data_calculation
 import Excel_Extraction
+import numpy as np
 
 full_path = os.path.abspath(os.getcwd())
 dictonary_file_path = file_name = r"C:\Users\willlee\Desktop\Manufacturing Issue\2020\Test Station Part Number.xlsx"
@@ -26,70 +27,59 @@ def data_analysis():
 def data_frame_merging_filter(usr, input_file, output_file):
     # usr = input('Please select you want to do the correction only (1) or  grouping after doing correction(2) or using predict analysis(3):')
     # Open MI file
+    # 1. doing clean up on data frame
+    # 2. change to columns (more flexible) -- should need to filter dataframe as some are not used
+
     if usr == 1:
-        # ----------------select which one you want to run---------------------------
-        df = pd.read_csv(input_file, names=["Issue Number", "Planner Code", "Product Description", "Managment Stripe",
-                                            "P7_TEST_ITA", \
-                                            "P7_TEST_FIXTURE", "P7_TEST_KIT", "P7_POT_SERIAL_NUMBER",
-                                            "P7_ROOT_CAUSE_TYPE_IDP7_ROOT_CAUSE_TYPE_ID", \
-                                            "P7_ROOT_CAUSE_SUBTYPE_ID", "P7_ROOT_CAUSE_DESCRIPTION", "Severity",
-                                            "Status", "Type", "Category", "Assignee Name", \
-                                            "Reviewer Name", "Days Open", "Test Station(s)", "Date Reported",
-                                            "Last Update Date", \
-                                            "Orangization Code", "Problem Summary","complete?","Days Open_2"], sep="\t", skiprows=1,
-                         encoding="utf-8", )
+        df = pd.read_table(input_file)
 
-        # df = pd.read_csv('C:\\Users\\willlee\\Desktop\\DataSet\\May_Data_2020_2.csv',names =["Issue Number","Planner Code","Product Description", \
-        #              "Managment Stripe","P7_TEST_ITA","P7_TEST_FIXTURE","P7_TEST_KIT","P7_POT_SERIAL_NUMBER"\
-        #              "P7_ROOT_CAUSE_TYPE_ID", "P7_ROOT_CAUSE_SUBTYPE_ID","P7_ROOT_CAUSE_DESCRIPTION","Severity","Status","Type",	\
-        #              "Category","Assignee Name","Reviewer Name","Days Open","Test Station(s)","Date Reported",\
-        #              "Last Update Date"	,"Orangization Code","Problem Summary"],sep="\t", skiprows=1,encoding = "utf-8",)
-        df = df
     elif usr == 2:
-        df = pd.read_excel(io=output_file, sheet_name='Sheet1')
-        # df = pd.read_excel(io=r"C:\\Users\\willlee\\Desktop\\DataSet\\May_Data_2020_2.xlsx", sheet_name='Sheet1')
+        df = pd.read_excel(output_file)
+        # read for the column that Unnamed and drop it
+        for column in df.columns:
+            if "Unnamed" in column or "unnamed" in column:  # will not use the column name using unnamed
+                df = df.drop(columns=column, axis=1)
 
-    print(len(df))
-    #    df = df.reset_index()
+    # check df and see already update
+    print(df)
+    # looking for some important needed columns
+    x = df.columns == 'Days Open'
+    y = np.where(x == True)
+    # Check content for the array
+    # get the length -- Expected one only else whole sequence out
 
-    # df.rename(columns={'index': 'Issue Number', 'Issue Number': 'Planner Code', 'Planner Code': 'Product Description',
-    #                     'Product Description': 'Managment Stripe', 'Managment Stripe': 'P7_TEST_ITA', \
-    #                     'P7_TEST_ITA': 'P7_TEST_FIXTURE', 'P7_TEST_FIXTURE': 'P7_TEST_KIT',
-    #                    'P7_TEST_KIT': 'P7_POT_SERIAL_NUMBER',
-    #                     'P7_POT_SERIAL_NUMBERP7_ROOT_CAUSE_TYPE_ID': 'P7_ROOT_CAUSE_TYPE_ID', \
-    #                    }, inplace=True)
-    #    df = df.reset_index()
-    #    df.drop(['Orangization Code'],inplace= True,axis = 1) # for csv file not for ABCD-1
-    # no longer using
-    # df.rename(columns={'level_0': 'Issue Number','level_1':'Severity','Issue_Number':'Status','Severity':'Type',
-    #                'Status':'Category','Type':'Assignee Name','Category':'Reviewer Name','Assignee Name':'Days Open',
-    #                'Reviewer Name':'Test Station(s)','Days Open':'Date Reported','Test Station(s)':'Last Update Date',
-    #                'Date Reported':'Orangization Code','Last Update Date':'Problem Summary'}, inplace= True)
+    if len(y) > 1 or len(y) == 0:
+        return None, 3
 
-    df['Test Station(s)'] = df['Test Station(s)'].str.upper()
-    df['Test Station(s)'] = df['Test Station(s)'].str.replace(" ", "")
-    # Open the dictonary file
+    # Upper case for the test station
+    df['Test Stations Used'] = df['Test Stations Used'].str.upper()
+    df['Test Stations Used'] = df['Test Stations Used'].str.replace(" ", "")
+    # Open the dictonary file and get the sheet
     xl = pd.ExcelFile(dictonary_file_path)
     print(xl.sheet_names)
     xl.close()
     # 2. Open Excel File Read with the Correct Sheet
     df_dictonary = pd.read_excel(io=dictonary_file_path, sheet_name=xl.sheet_names[2])
-    print("AAAA")
     # Create empty data frame column
-
+    # https://stackoverflow.com/questions/39050539/how-to-add-multiple-columns-to-pandas-dataframe-in-one-assignment
     # applicable for user choose number 1 and 3
     if usr == 1:
-        df['Station Name'] = "Undefined"
-        df['Location'] = "Undefined"
-        df['TE PN'] = "Undefined"
-        df['Nearest Correction Value'] = "-"
-        df['Original Value'] = "-"
-
+        df = df.join(pd.DataFrame(
+            {
+                'Station Name': "Undefined",
+                'Location': 'Undefined',
+                'TE PN': 'Undefined',
+                'Nearest Correction Value': '-',
+                'Original Value': '-'
+            }, index=df.index
+        ))
+    print(df)
+    # reserve for machine learning use
     # prediction_dict = data_analysis()
     cannot_find = False
 
     for row in range(0, len(df)):
-        valueOut = df['Test Station(s)'][row]
+        valueOut = df['Test Stations Used'][row]
         df_filter = df_dictonary.loc[df_dictonary['Station Name'] == valueOut]
         try:
 
@@ -98,7 +88,6 @@ def data_frame_merging_filter(usr, input_file, output_file):
             df.loc[row, 'TE PN'] = df_filter['TE PN'].values[0]
 
         except:
-
             cannot_find = True
             # pull to other file need to add  auto checking
             print(row)
@@ -115,10 +104,10 @@ def data_frame_merging_filter(usr, input_file, output_file):
 
             cannot_find = False
             pass
-    print(df)
-    if cannot_find:
-        print("Some Part number cannot find from dictonary. Please Manual Check it ")
-        print(row)
+            print(df)
+            if cannot_find:
+                print("Some Part number cannot find from dictionary. Please Manual Check it ")
+                print(row)
 
     df.to_excel(output_file)
     # df.to_excel('C:\\Users\\willlee\\Desktop\\DataSet\\May_Data_2020_2.xlsx')
@@ -151,7 +140,7 @@ def predict_analysis(dictonary_data, df, row, value_out):
         # split_max_values
         ori_value, corr_value = max_keys.split('_')
         # replace the corr_value to the test station
-        df.loc[row, 'Test Station(s)'] = corr_value
+        df.loc[row, 'Test Stations Used'] = corr_value
     # #get_value_list
     # val_list = list(values)
     # index_value = val_list.index(max_value)
@@ -209,16 +198,44 @@ def save_file(file_store, file_name):
     else:
         return
 
+# https://stackoverflow.com/questions/41428539/data-frame-to-file-txt-python
+def file_rename(file_to_open, file_write_in):
+    # column_to_swap = list
+    title = ''
+    data = pd.read_excel(file_to_open)
+    # get the column name as title
+    for column in data.columns:
+        title = title + column + "\t"
+
+    np.savetxt(file_write_in, data.values, delimiter="\t", header=title, fmt="%s")
+
 
 def main(dictonary_file_path=None, usr1=1, input_file=None, save_file_path=None):
-    if input_file != None or save_file_path != None:
+    # read for the file extension and change to the txt file format
+    file_path, file_name = os.path.splitext(input_file)
+    print(file_name)
+    if '.xlsx' in file_name:
+        # save the file in the .txt
+        file_path = file_path + ".txt"
+        # create path
         try:
-            input_file = open(input_file, "r+")  # or "a+", whatever you need
-            # save_file_path = open(save_file_path, "r+")  # or "a+", whatever you need
-        except IOError:
-            print("Could not open file! Please close Excel manually!")
-            # close file
+            file_rename(input_file, file_path)
+            input_file = file_path
+        except PermissionError as err:
+            print("Error {0}".format(err))
             return
+
+    try:
+        input_file = open(input_file, "r+")  # or "a+", whatever you need
+        output_file = open(save_file_path, "w+")
+
+    except IOError:
+        print("Could not open file! Please close Excel manually!")
+        # close file
+        return
+    else:
+        output_file.close()
+
     table_list = []
     dict_part_number = {}
     table_station = excel_extraction_function(dictonary_file_path)
@@ -242,8 +259,13 @@ def main(dictonary_file_path=None, usr1=1, input_file=None, save_file_path=None)
         print(file_store)
         file_filter_to_save = create_new_file(save_file_path, 'templatefile.txt')
         save_file(file_store, file_filter_to_save)
+    if usr == 3:
+        # raise error
+        raise Exception("Cannot look for important columns. Please check your file.")
     # Save into the file
 
 
 if __name__ == "__main__":
-    main()
+    main(dictonary_file_path=r"C:\Users\willlee\Desktop\Manufacturing Issue\2020\Test Station Part Number.xlsx"
+         , usr1=1, input_file=r"C:\Users\willlee\Desktop\Manufacturing Issue\2020\MI_MTBF_MTTR\Other\MI_Jan-Feb.xlsx",
+         save_file_path=r"C:\Users\willlee\Desktop\DataSet\1H_2020_3.xlsx")
