@@ -8,7 +8,8 @@ import re
 import pandas as pd
 import numpy as np
 import multiprocessing
-import math
+import csv
+
 state = "Not Ready"
 
 
@@ -478,8 +479,8 @@ class WebpageExtract:
             return True, this_page
         return False, this_page
 
-    def multi_process_read(self,rows, this_page, driver, soup, base_addr, update_status, start_value, end_value,ctr):
-        for i in range(start_value,end_value,ctr):
+    def multi_process_read(self, rows, this_page, driver, soup, base_addr, update_status, start_value, end_value, ctr):
+        for i in range(start_value, end_value, ctr):
             column = 0
             write_in = False
             print(rows[i])
@@ -505,7 +506,7 @@ class WebpageExtract:
         if len(rows) - 1 == ctr:
             return True, this_page
         return False, this_page
-    
+
     def table_lookup(self, driver, this_page, update_status):
         # Should be DateNow
         ctr = 0
@@ -536,12 +537,12 @@ class WebpageExtract:
         table = soup.find(lambda tag: tag.name == 'table' and tag.has_attr('id') and tag['id'] == '4125346614174390009')
         rows = table.findAll('tr')
         # read number of rows
-        #half_row = rows / 2
+        # half_row = rows / 2
         # create 2 processes
-        #p1 = multiprocessing.Process(target=self.multi_process_read, args=(rows, 0, int(quarter_row) - 1, 1, return_ls1))
-        #p2 = multiprocessing.Process(target=self.multi_process_read, args=(rows, 0, int(quarter_row) - 1, 1, return_ls1))
-        #self.multi_data_process(driver, rows, soup, this_page, update_status, base_addr)
-        #read table rows to see amount of row and think multiprocessing
+        # p1 = multiprocessing.Process(target=self.multi_process_read, args=(rows, 0, int(quarter_row) - 1, 1, return_ls1))
+        # p2 = multiprocessing.Process(target=self.multi_process_read, args=(rows, 0, int(quarter_row) - 1, 1, return_ls1))
+        # self.multi_data_process(driver, rows, soup, this_page, update_status, base_addr)
+        # read table rows to see amount of row and think multiprocessing
 
         for row in rows:
             column = 0
@@ -590,10 +591,37 @@ class DataFrameFeature:
     # https: // stackoverflow.com / questions / 31247198 / python - pandas - write - content - of - dataframe - into - text - file
     def column_swapping(self, file_to_open, column_to_swap, drop_col_bool, title):
         # column_to_swap = list
-        data = pd.read_csv(file_to_open, sep="\t",encoding ='latin1')
+        data = pd.read_csv(file_to_open, sep="\t", encoding='latin1')
         # need to test it out for actual column
         data[column_to_swap[1]] = data[column_to_swap[0]]
         if drop_col_bool:
             data = data.drop(axis=1, columns=["Complete?", "Days_Open_2"])
         # save the data frame back into txt file
         np.savetxt(file_to_open, data.values, delimiter="\t", header=title, fmt="%s")
+
+    # https://realpython.com/python-csv/
+    # https://stackoverflow.com/questions/41428539/data-frame-to-file-txt-python
+    def file_change_ext(self, file_to_open, file_write_in,delete):
+        data = []
+        columns = ''
+        # reject first column
+
+        with open(file_to_open, 'r') as fp:
+            reader = csv.reader(fp, dialect='excel', delimiter='\t')
+            line_count = 0
+            for row in reader:
+                if line_count == 0:
+                    columns = row  # This is the column name
+                    line_count += 1
+                    print(row)
+                else:
+                    data.append(row)
+                    line_count += 1
+        new_data = pd.DataFrame(data, columns=columns)
+        new_data.to_excel(file_write_in)
+
+        if delete:
+            if os.path.exists(file_to_open):
+                os.remove(file_to_open)
+            else:
+                print ("File No delete")

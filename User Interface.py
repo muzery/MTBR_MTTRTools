@@ -69,7 +69,7 @@ class ListCheck:
                 print("Setting not complete, web scrapping are unable to run")
                 listbox.insert(END, 'Setting not complete, web scrapping are unable to run')
 
-            if file_ext2.strip() == '.csv':
+            if file_ext2.strip() == '.xlsx' or file_ext2.strip() == '.txt' :
                 file_is_good1 = True
 
             info = self.date_month(listInput)
@@ -97,12 +97,11 @@ class ListCheck:
                 filename_xls_with_correction, file_ext_xls_with_correction = os.path.splitext(
                     listInput['xls_file_with_correction'])  # Excel Pfile save path
 
-                if file_ext_source_file.strip() == '.csv' and \
+                if (file_ext_source_file.strip() == '.txt' or file_ext_source_file.strip() == '.xlsx') and \
                         file_ext_part_station.strip() == '.xlsx' and file_ext_xls_with_correction.strip() == '.xlsx':
 
                     if os.path.exists(listInput['SourceFile'].strip()) and os.path.exists(
-                            listInput['PartStation'].strip()) or os.path.exists(
-                        listInput['xls_file_with_correction'].strip()):
+                            listInput['PartStation'].strip()) or os.path.exists(listInput['xls_file_with_correction'].strip()):
                         compile_function = True
 
                     else:
@@ -110,7 +109,8 @@ class ListCheck:
                         listbox.insert(END, 'File (csv) cannot found! Please Check')
 
                 # write together with template file
-                if file_ext_source_file.strip() == '.csv' and file_ext_template_file.strip() == '.xlsx' and \
+                if (file_ext_source_file.strip() == '.txt' or file_ext_source_file.strip() == '.xlsx') \
+                        and file_ext_template_file.strip() == '.xlsx' and \
                         file_ext_template_file.strip() == '.xlsx' and file_ext_xls_with_correction.strip() == '.xlsx':
 
                     if os.path.exists(listInput['SourceFile'].strip()) and os.path.exists(
@@ -370,12 +370,12 @@ class Example(Frame):
         frame19.pack(fill=BOTH, expand=False)
 
         status = IntVar()
-        rdo3 = Radiobutton(frame19, text='Closed(continue count)', variable=status, value=1)
+        rdo3 = Radiobutton(frame19, text='Closed(included waiting)', variable=status, value=1)
         rdo3.pack(side=LEFT, anchor=N, padx=5, pady=5)
         status.set(1)
         # chk1.pack(side=BOTTOM)
 
-        rdo6 = Radiobutton(frame19, text='Closed(included Waiting)', variable=status, value=2)
+        rdo6 = Radiobutton(frame19, text='Closed(excluded Waiting)', variable=status, value=2)
         rdo6.pack(side=LEFT, anchor=W, padx=5, pady=5)
 
         rdo5 = Radiobutton(frame19, text='Waiting for 3rd Party', variable=status, value=3)

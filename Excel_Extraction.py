@@ -245,8 +245,9 @@ def find_nearest_station_rule_all(df, text):
         return find_nearest_station_rule_three(list_dictionary, single_text)
 
 
-def correction_station_name(station_name):
-    file_name = r"C:\Users\willlee\Desktop\Manufacturing Issue\2020\Test Station Part Number.xlsx"
+def correction_station_name(station_name,dictionary_file):
+    file_name = dictionary_file
+    #file_name = r"C:\Users\willlee\Desktop\Manufacturing Issue\2020\Test Station Part Number.xlsx"
     xl = pd.ExcelFile(file_name)
     print(xl.sheet_names)
     xl.close()

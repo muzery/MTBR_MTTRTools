@@ -24,7 +24,7 @@ def data_analysis():
     return dictionary_cal
 
 
-def data_frame_merging_filter(usr, input_file, output_file):
+def data_frame_merging_filter(usr, input_file, output_file, dictonary_file_path):
     # usr = input('Please select you want to do the correction only (1) or  grouping after doing correction(2) or using predict analysis(3):')
     # Open MI file
     # 1. doing clean up on data frame
@@ -91,7 +91,7 @@ def data_frame_merging_filter(usr, input_file, output_file):
             cannot_find = True
             # pull to other file need to add  auto checking
             print(row)
-            nearest_station_name = Excel_Extraction.correction_station_name(valueOut)
+            nearest_station_name = Excel_Extraction.correction_station_name(valueOut, dictonary_file_path)
             # assign station name
             str_text = ""
             for station_naming in nearest_station_name:
@@ -198,6 +198,7 @@ def save_file(file_store, file_name):
     else:
         return
 
+
 # https://stackoverflow.com/questions/41428539/data-frame-to-file-txt-python
 def file_rename(file_to_open, file_write_in):
     # column_to_swap = list
@@ -227,14 +228,14 @@ def main(dictonary_file_path=None, usr1=1, input_file=None, save_file_path=None)
 
     try:
         input_file = open(input_file, "r+")  # or "a+", whatever you need
-        output_file = open(save_file_path, "w+")
+
 
     except IOError:
         print("Could not open file! Please close Excel manually!")
         # close file
         return
     else:
-        output_file.close()
+        pass
 
     table_list = []
     dict_part_number = {}
@@ -252,7 +253,7 @@ def main(dictonary_file_path=None, usr1=1, input_file=None, save_file_path=None)
                     dict_part_number = {}
     print(table_list)
 
-    [df, usr] = data_frame_merging_filter(usr1, input_file, save_file_path)
+    [df, usr] = data_frame_merging_filter(usr1, input_file, save_file_path, dictonary_file_path)
 
     if usr == 2:
         file_store = grouping(data_frame=df, table=table_list)

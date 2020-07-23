@@ -6,6 +6,9 @@ from bs4.element import NavigableString, Tag
 import os
 import functools
 from webpage_extraction import WebpageExtract, DataFrameFeature
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 # https://qxf2.com/blog/auto-generate-xpaths-using-python/
 # here is hardcoded
@@ -384,7 +387,7 @@ def logging_time(func):
     return wrapper_time
 
 
-# @logging_time
+@logging_time
 def main(user_name, password, status, start_date, end_date, source_file, browser):
     title1 = ""
     df_ctrl = DataFrameFeature()
@@ -442,10 +445,11 @@ def main(user_name, password, status, start_date, end_date, source_file, browser
     if update_status[1] == 'Party':
         Title1 = Title
         df_ctrl.column_swapping(file_save, ["Days_Open_2", "Days Open"], True, Title1)
-    #rename_file_ext(file_save, '.csv') # Able to work at txt file
+    if os.path.splitext(source_file)[1] == ".xlsx":
+        df_ctrl.file_change_ext(file_save, source_file,True)
     return "Finish"
 
 
 if __name__ == "__main__":
-    main(os.environ.get('Username'), 'QuanQuan_90', 'Closed_Party', '1-JUN-2020', '15-JUL-2020',
-         r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_AllAAA.txt", 'firefox')
+    main(os.environ.get('Username'), 'QuanQuan_90', 'Closed_Party', '1-JUN-2020', '10-JUN-2020',
+         r"C:\Users\willlee\Desktop\DataSet\1H_test_2020_PartyAAA.xlsx", 'firefox')
