@@ -196,7 +196,7 @@ def find_nearest_station_rule_two(list_array, some_text):
 # ([A-Z]{0,4})\s?([0-9]+)\s?(PEN|PXIE|PXI)?
 # ([A-Z]{0,4})\s?(?:([0-9|A-Z]+))\s?(PEN|PXIE|PXI)
 #  ori value = ([A-Z]{0,4})\s?([0-9]+)\s?(PEN|PXIE|PXI)?
-def find_nearest_station_rule_one(df, regex=r'([A-Z]{0,4})\s?(?:([0-9|A-Z]+))\s?(PEN|PXIE|PXI)'):
+def find_nearest_station_rule_one(df, regex=r'([A-Z]{0,4})\s?(?:([0-9|A-Z]+))\s?(PEN|PXIE|PXI|NIH)'):
     #    regex = r'([A-Z]{3,4})\s?(\w+)\s?(PXI|PXIE)?'
     one_d_array = []
     if isinstance(df, pd.DataFrame):

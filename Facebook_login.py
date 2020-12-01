@@ -410,16 +410,38 @@ def automate(username, password, selection, start_date, end_date, source_file, L
         pwd = password
 
     driver = webdriver.Firefox()
-    driver.get('https://apex.natinst.com/apex/f?p=NIAPEXMENU:101')
+    #driver.get('https://apex.natinst.com/apex/f?p=NIAPEXMENU:101')
+    driver.get('https://echo.natinst.com/')
+    print('Opened Echo')
+    #driver.find_elements_by_css_selector('div.tile:nth-child(1) > div:nth-child(1)')
+
     # write_log_message(ListBox,'Opened APEX')
     print('Opened APEX')
     sleep(2)
-
-    username_box = driver.find_element_by_id('P101_USERNAME')
+    username_box = driver.find_element_by_id('i0116')
+    #username_box = driver.find_element_by_id('P101_USERNAME')
     username_box.send_keys(usr)
     # write_log_message(ListBox, 'Email Id entered')
     print('Email Id entered')
     sleep(2)
+
+    driver.find_element_by_id('idSIButton9').click()
+    sleep(2)
+
+    # User need to enter email and password id at the message box due to no way to control
+
+    input_part = driver.find_element_by_id('inputPart')
+    input_part.send_keys('159572B-000L')
+
+    sleep(10)
+
+    search_box = driver.find_element_by_id('searchButton')
+    search_box.click()
+
+
+
+
+
 
     password_box = driver.find_element_by_id('P101_PASSWORD')
     password_box.send_keys(pwd)

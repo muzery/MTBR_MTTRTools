@@ -300,7 +300,7 @@ def mfg_issue_view(driver, feature, status, start_date, end_date):
     # unable to work on small window
     # str_construct = driver.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_drop_2_c5i', [])   #<---cannot find
     # driver.find_element_by_css_selector(str_construct).click()
-    sleep(3)
+    sleep(5)
     str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_search_button', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
     sleep(5)
@@ -308,7 +308,7 @@ def mfg_issue_view(driver, feature, status, start_date, end_date):
     # doing data key in
     que = driver.find_element_by_css_selector(str_construct)
     que.send_keys(status)
-    sleep(2)
+    sleep(5)
     # page_source = webpage_refresh(driver)
     str_construct = feature.soup_parsing_by_id_name(soup, 'button', 'P14_ISSUES_REGION_column_search_root', [], 'value')
     driver.find_element_by_css_selector(str_construct).click()
